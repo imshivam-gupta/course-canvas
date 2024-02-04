@@ -93,6 +93,7 @@ model Course {
 model Section {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   title       String
+  position    Int
   description String?
   imageUrl    String?
   isPublished Boolean   @default(false)
