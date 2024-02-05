@@ -9,23 +9,19 @@ export default function MyAdapter(prisma:PrismaClient, options = {}) {
 
         // Create User Method
         async createUser({id:_id,...data}:any) {
-            console.log("Create user from adapter called");
             const return_val = prisma.user.create({data});
             return return_val;
         },
 
         // Get User Methods
         async getUser(id:any) {
-            console.log("Get user from adapter called");
             return prisma.user.findUnique({where:{id}});
         },
         async getUserByEmail(email:string) {
-            console.log("Get user by email from adapter called");
             return prisma.user.findUnique({where:{email}});
         },
 
         async getUserByAccount(provider_providerAccountId :any) {
-            console.log("Get user by account from adapter called");
             const account = await prisma.account.findUnique({
                 where: { provider_providerAccountId},
                 select: { user: true },
@@ -34,32 +30,26 @@ export default function MyAdapter(prisma:PrismaClient, options = {}) {
         },
 
         async updateUser({id,...data}:any) {
-            console.log("Update user from adapter called");
             return prisma.user.update({where:{id},data});
         },
 
         async deleteUser(id:any) {
-            console.log("Delete user from adapter called");
             return prisma.user.delete({where:{id}});
         },
 
         async linkAccount(data:any) {
-            console.log("Link account from adapter called");
             return prisma.account.create({data}) as unknown as AdapterAccount;
         },
 
         async unlinkAccount(providerAccountId_provider :any) {
-            console.log("Unlink account from adapter called");
             return prisma.account.delete({where:{providerAccountId_provider}}) as unknown as AdapterAccount;
         },
 
         async createSession({ sessionToken, userId, expires }:any) {
-            console.log("Create session from adapter called");
             return prisma.session.create({data:{sessionToken,userId,expires}});
         },
 
         async getSessionAndUser(sessionToken:any) {
-            console.log("Get session and user from adapter called");
             const userAndSession = await prisma.session.findUnique({
                 where: { sessionToken },
                 include: { user: true },
@@ -70,15 +60,12 @@ export default function MyAdapter(prisma:PrismaClient, options = {}) {
         },
         
         async updateSession(data:any) {
-            console.log("Update session from adapter called");
             return prisma.session.update({where:{sessionToken:data.sessionToken},data});
         },
         async deleteSession(sessionToken:any) {
-            console.log("Delete session from adapter called");
             return prisma.session.delete({where:{sessionToken}});
         },
         async createVerificationToken({ identifier, expires, token }:any) {
-            console.log("create verification token called");
             const verificationToken = await prisma.verificationToken.create({ data: { identifier, expires, token } }) as any;
             if (verificationToken.id) delete verificationToken.id;
             return verificationToken;

@@ -1,3 +1,4 @@
+"use client";
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { BlockMath, InlineMath } from 'react-katex';
@@ -17,8 +18,8 @@ const _mapProps = (props) => ({
   ],
   components: {
     ...props.components,
-    math: ({ value }) => <InlineMath>\int_0^\infty x^2 dx</InlineMath>,
-    inlineMath: ({ value }) => <InlineMath>\int_0^\infty x^2 dx</InlineMath>,
+    math: ({ value }) => <BlockMath>{value}</BlockMath>,
+    inlineMath: ({ value }) => <InlineMath>{value}</InlineMath>,
   }
 });
 

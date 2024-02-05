@@ -32,7 +32,7 @@ export const ChapterActions = ({
   const onClick = async () => {
     try {
       setIsLoading(true);
-      console.log(session.user.id)
+  
 
       if (isPublished) {
         await axios.patch(`/api/courses/${courseId}/sections/${sectionId}/chapters/${chapterId}/unpublish`,{},{

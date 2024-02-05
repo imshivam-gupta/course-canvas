@@ -96,7 +96,6 @@ export async function PATCH(
   try {
     const userId = req.headers.get("authorization");
 
-    console.log(userId);
 
     if (!userId) {
         return new NextResponse("Unauthorized", { status: 401 });
@@ -158,7 +157,6 @@ export async function PATCH(
     if(values.docUrl){
 
       const id_name = values.docUrl.split("/").pop();
-      console.log(id_name);
 
       await db.chapter.update({
         where: {

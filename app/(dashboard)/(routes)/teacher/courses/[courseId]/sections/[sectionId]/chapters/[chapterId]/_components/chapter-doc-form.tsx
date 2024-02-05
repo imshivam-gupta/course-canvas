@@ -52,7 +52,6 @@ export const ChapterDocForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      console.log(session.user.id);
       await axios.patch(`/api/courses/${courseId}/sections/${sectionId}/chapters/${chapterId}`, values,{
         headers:{
           'authorization': session.user.id

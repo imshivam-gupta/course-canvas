@@ -1,7 +1,3 @@
-import { usePathname } from "next/navigation";
-import { LogOut, User } from "lucide-react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { isTeacher } from "@/lib/teacher";
 import { navRoutes } from "@/lib/utils";
 import { NavLink } from "../app/(dashboard)/_components/navlink";
@@ -15,11 +11,6 @@ interface NavLinkProps {
 }
 
 export const NavbarRoutes = () => {
-  // const pathname = usePathname();
-
-  // const isTeacherPage = pathname?.startsWith("/teacher");
-  // const isCoursePage = pathname?.includes("/courses");
-  // const isSearchPage = pathname === "/search";
 
   return (
     <>
@@ -46,6 +37,11 @@ export const NavbarRoutes = () => {
             </Button>
           </Link>
         ) : null} */}
+
+
+        {isTeacher() && (
+          <NavLink href="/teacher/courses" routename="Teacher mode" />
+        )}
 
         {navRoutes.map((route:NavLinkProps) => (
           <NavLink key={route.name} href={route.path} routename={route.name} />

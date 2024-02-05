@@ -142,7 +142,7 @@ model Chapter {
   isFree       Boolean            @default(false)
   attachment   ChapterAttachment? @relation(fields: [attachmentId], references: [id])
   attachmentId String?            @unique
-
+  youtubeVideo String?
   muxData      MuxData?
   userProgress UserProgress[]
 

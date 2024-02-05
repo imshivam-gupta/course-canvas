@@ -73,8 +73,6 @@ export const getCourses = async ({
       })
     );
 
-    console.log("[GET_COURSES]", coursesWithProgress);
-
     return coursesWithProgress;
   } catch (error) {
     console.log("[GET_COURSES]", error);

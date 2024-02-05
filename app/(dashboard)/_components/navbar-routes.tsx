@@ -1,12 +1,10 @@
-import { usePathname } from "next/navigation";
-import { LogOut, User } from "lucide-react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { isTeacher } from "@/lib/teacher";
 import { navRoutes } from "@/lib/utils";
 import { NavLink } from "./navlink";
 import { Logo } from "./logo";
 import { UserButton } from "@/app/(dashboard)/_components/UserButton";
+import { isTeacher } from "@/lib/teacher";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/dist/server/api-utils";
 // import { SearchInput } from "./search-input";
 
 interface NavLinkProps {
@@ -14,12 +12,19 @@ interface NavLinkProps {
   path: string;
 }
 
-export const NavbarRoutes = () => {
-  // const pathname = usePathname();
+export const NavbarRoutes = async() => {
 
-  // const isTeacherPage = pathname?.startsWith("/teacher");
-  // const isCoursePage = pathname?.includes("/courses");
-  // const isSearchPage = pathname === "/search";
+  const session = await getServerSession();
+    if (!session?.user) {
+        redirect("/auth/signin");
+    }
+    const staticData = await fetch(`${process.env.NEXT_API_URL}/user`, {
+        cache: 'no-cache',
+        method: 'POST',
+        body: JSON.stringify({ email: session.user.email }),
+      });
+      const res = await staticData.json();
+      const userId = res.user.id;
 
   return (
     <>
@@ -46,6 +51,10 @@ export const NavbarRoutes = () => {
             </Button>
           </Link>
         ) : null} */}
+
+      {isTeacher(userId) && (
+          <NavLink href="/teacher/courses" routename="Teacher mode" />
+        )}
 
         {navRoutes.map((route:NavLinkProps) => (
           <NavLink key={route.name} href={route.path} routename={route.name} />
