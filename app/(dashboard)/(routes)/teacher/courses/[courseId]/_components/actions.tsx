@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
 import { useConfettiStore } from "@/hooks/use-confetti-store";
+import { useSession } from "next-auth/react";
 
 interface ActionsProps {
   disabled: boolean;
@@ -22,6 +23,7 @@ export const Actions = ({
   isPublished
 }: ActionsProps) => {
   const router = useRouter();
+  const { data: session } = useSession();
   const confetti = useConfettiStore();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,10 +32,18 @@ export const Actions = ({
       setIsLoading(true);
 
       if (isPublished) {
-        await axios.patch(`/api/courses/${courseId}/unpublish`);
+        await axios.patch(`/api/courses/${courseId}/unpublish`,{},{
+          headers: {
+            'authorization': session.user.id
+          },
+        });
         toast.success("Course unpublished");
       } else {
-        await axios.patch(`/api/courses/${courseId}/publish`);
+        await axios.patch(`/api/courses/${courseId}/publish`,{},{
+          headers: {
+            'authorization': session.user.id
+          },
+        });
         toast.success("Course published");
         confetti.onOpen();
       }
@@ -50,7 +60,11 @@ export const Actions = ({
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/courses/${courseId}`);
+      await axios.delete(`/api/courses/${courseId}`,{
+        headers: {
+          'authorization': session.user.id
+        },
+      });
 
       toast.success("Course deleted");
       router.refresh();

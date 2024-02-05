@@ -11,6 +11,7 @@ import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
+import { useSession } from "next-auth/react";
 
 interface ImageFormProps {
   initialData: Course
@@ -28,14 +29,18 @@ export const ImageForm = ({
   courseId
 }: ImageFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
-
+  const { data: session } = useSession();
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const router = useRouter();
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
+      await axios.patch(`/api/courses/${courseId}`, values,{
+        headers: {
+          'authorization': session.user.id
+        },
+      });
       toast.success("Course updated");
       toggleEdit();
       router.refresh();

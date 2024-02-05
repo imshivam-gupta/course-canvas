@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { Combobox } from "@/components/ui/combobox";
+import { useSession } from "next-auth/react";
 
 interface CategoryFormProps {
   initialData: Course;
@@ -38,7 +39,7 @@ export const CategoryForm = ({
   options,
 }: CategoryFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
-
+  const { data: session } = useSession();
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const router = useRouter();
@@ -54,7 +55,12 @@ export const CategoryForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
+      await axios.patch(`/api/courses/${courseId}`, values,{
+        headers: {
+          'authorization': session.user.id
+        },
+      }
+      );
       toast.success("Course updated");
       toggleEdit();
       router.refresh();

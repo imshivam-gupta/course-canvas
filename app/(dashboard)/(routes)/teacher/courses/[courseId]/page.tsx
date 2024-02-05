@@ -14,6 +14,7 @@ import { AttachmentForm } from "./_components/attachment-form";
 import { ChaptersForm } from "./_components/chapters-form";
 import { Actions } from "./_components/actions";
 import { getServerSession } from "next-auth";
+import { SectionsForm } from "./_components/sections-form";
 
 const CourseIdPage = async ({
   params
@@ -37,8 +38,6 @@ const CourseIdPage = async ({
         return redirect("/");
     }
 
-    console.log(params, userId);
-
   const course = await db.course.findUnique({
     where: {
       id: params.courseId,
@@ -46,9 +45,7 @@ const CourseIdPage = async ({
     },
     include: {
       sections: {
-        orderBy: {
-          position: "asc",
-        },
+        
       },
       attachments: {
         orderBy: {
@@ -74,7 +71,7 @@ const CourseIdPage = async ({
     course.imageUrl,
     course.price,
     course.categoryId,
-    course.chapters.some(chapter => chapter.isPublished),
+    course.sections.some(section => section.isPublished),
   ];
 
   const totalFields = requiredFields.length;
@@ -165,10 +162,10 @@ const CourseIdPage = async ({
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={ListChecks} />
                 <h2 className="text-xl">
-                  Course chapters
+                  Course Sections
                 </h2>
               </div>
-              <ChaptersForm
+              <SectionsForm
                 initialData={course}
                 courseId={course.id}
               />

@@ -26,7 +26,6 @@ export default function MyAdapter(prisma:PrismaClient, options = {}) {
 
         async getUserByAccount(provider_providerAccountId :any) {
             console.log("Get user by account from adapter called");
-            console.log(provider_providerAccountId);
             const account = await prisma.account.findUnique({
                 where: { provider_providerAccountId},
                 select: { user: true },
@@ -137,8 +136,6 @@ export const authOptions = {
                         where: { email: user.email },
                     });
                     if(user_exist){
-                        console.log("User already exists");
-                        console.log(user_exist);
                         return true;
                     }
                     await prisma.user.upsert({
@@ -188,7 +185,6 @@ export const authOptions = {
                 const userData = await prisma.user.findUnique({
                     where: { email: session.user.email },
                 });
-                console.log("userData", userData);
                 session.user = userData;
                 return session;
             } catch (error) {

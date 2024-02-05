@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { formatPrice } from "@/lib/format";
+import { useSession } from "next-auth/react";
 
 interface PriceFormProps {
   initialData: Course;
@@ -36,7 +37,7 @@ export const PriceForm = ({
   courseId
 }: PriceFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
-
+  const { data: session } = useSession();
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const router = useRouter();
@@ -52,7 +53,11 @@ export const PriceForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
+      await axios.patch(`/api/courses/${courseId}`, values,{
+        headers: {
+          'authorization': session.user.id
+        },
+      });
       toast.success("Course updated");
       toggleEdit();
       router.refresh();

@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useSession } from "next-auth/react";
 
 interface TitleFormProps {
   initialData: {
@@ -37,7 +38,7 @@ export const TitleForm = ({
   courseId
 }: TitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
-
+  const { data: session } = useSession();
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const router = useRouter();
@@ -51,7 +52,12 @@ export const TitleForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}`, values);
+      
+      await axios.patch(`/api/courses/${courseId}`, values,{
+        headers: {
+          'authorization': session.user.id
+        },
+      });
       toast.success("Course updated");
       toggleEdit();
       router.refresh();
