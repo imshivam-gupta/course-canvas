@@ -58,9 +58,10 @@ export const CourseCard = ({
               value={progress}
             />
           ) : (
-            <p className="text-md md:text-sm font-medium text-slate-700">
-              {formatPrice(price)}
-            </p>
+            // <p className="text-md md:text-sm font-medium text-slate-700">
+            //   {formatPrice(price)}
+            // </p>
+            <></>
           )}
         </div>
       </div>

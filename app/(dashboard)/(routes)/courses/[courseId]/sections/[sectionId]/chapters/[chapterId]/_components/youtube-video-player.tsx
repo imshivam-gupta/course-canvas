@@ -6,11 +6,12 @@ const YouTubePlayer = ({ videoId }:any) => {
     return (
       <ReactPlayer
         url={`https://www.youtube.com/watch?v=${videoId}`}
-        width={"90%"}
-        height={"63vh"}
+        width={"100%"}
+        height={"91vh"}
         playbackRate={2}
         controls={true}
-        style={{ margin: "auto",borderRadius: "10rem" }}
+        playing={true}
+        style={{ marginRight: "auto" }}
       />
     );
   };

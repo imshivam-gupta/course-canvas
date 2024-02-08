@@ -11,10 +11,12 @@ interface SectionSidebarItemProps {
   isCompleted: boolean;
   courseId: string;
   isLocked: boolean;
+  sectionId: string;
 };
 
 export const SectionSidebarItem = ({
   label,
+  sectionId,
   id,
   isCompleted,
   courseId,
@@ -27,7 +29,7 @@ export const SectionSidebarItem = ({
   const isActive = pathname?.includes(id);
 
   const onClick = () => {
-    router.push(`/courses/${courseId}/chapters/${id}`);
+    router.push(`/courses/${courseId}/sections/${sectionId}/chapters/${id}`);
   }
 
   return (

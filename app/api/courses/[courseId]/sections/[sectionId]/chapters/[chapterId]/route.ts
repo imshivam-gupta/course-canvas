@@ -170,13 +170,13 @@ export async function PATCH(
 
       // create attachment in chapter of course
 
-      await db.chapterAttachment.create({
-        data: {
-          name: id_name,
-          chapterId: params.chapterId,
-          url: values.docUrl,
-        }
-      });
+      // await db.chapterAttachment.create({
+      //   data: {
+      //     name: id_name,
+      //     chapterId: params.chapterId,
+      //     url: values.docUrl,
+      //   }
+      // });
 
     }
 

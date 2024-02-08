@@ -33,6 +33,7 @@ enum Role {
   USER
   ADMIN
   TEACHER
+  MENTOR
 }
 
 model Session {
@@ -46,14 +47,17 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
   email         String
-  role          Role      @default(USER)
+  role          Role         @default(USER)
   name          String?
-  emailVerified DateTime? @map("email_verified")
+  emailVerified DateTime?    @map("email_verified")
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Submission    Submission[]
+  Editor        Editor?      @relation(fields: [editorId], references: [id])
+  editorId      String?      @db.ObjectId
 
   @@unique(email)
   @@map("users")
@@ -104,9 +108,9 @@ model Section {
 }
 
 model Category {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  name    String   @unique
-  courses Course[]
+  id     String   @id @default(auto()) @map("_id") @db.ObjectId
+  name   String   @unique
+  Course Course[]
 }
 
 model CourseAttachment {
@@ -121,35 +125,123 @@ model CourseAttachment {
   @@index([courseId])
 }
 
-model ChapterAttachment {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  url       String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Chapter   Chapter?
-  chapterId String?
+model TopicTags {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
+  GODLEVEL
+}
+
+model Company {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  name     String  @unique
+  Editor   Editor? @relation(fields: [editorId], references: [id])
+  editorId String? @db.ObjectId
+}
+
+model TestCase {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  Input         String
+  Output        String
+  Explanation   String?
+  exampleEditor Editor? @relation("example", fields: [exampleRuleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  hiddenEditor  Editor? @relation("hiddencases", fields: [hiddenRuleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  exampleRuleId String?
+  hiddenRuleId  String?
+}
+
+model CodingLanguage {
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
+  name       String       @unique
+  Submission Submission[]
+  Editor     Editor?      @relation(fields: [editorId], references: [id])
+  editorId   String?      @db.ObjectId
+}
+
+enum SubmissionStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum SubmissionResult {
+  ACCEPTED
+  WRONG_ANSWER
+  MEMORY_LIMIT_EXCEEDED
+  OUTPUT_LIMIT_EXCEEDED
+  TIME_LIMIT_EXCEEDED
+  RUNTIME_ERROR
+  INTERNAL_ERROR
+  COMPILATION_ERROR
+  TIMEOUT
+}
+
+model Submission {
+  id         String           @id @default(auto()) @map("_id") @db.ObjectId
+  code       String
+  language   CodingLanguage   @relation(fields: [languageId], references: [id])
+  languageId String
+  user       User             @relation(fields: [userId], references: [id])
+  userId     String
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  editorId   String
+  editor     Editor           @relation(fields: [editorId], references: [id])
+  notes      String
+  status     SubmissionStatus
+  result     SubmissionResult
+  runtime    String
+  memory     String
+}
+
+model Editor {
+  id                 String           @id @default(auto()) @map("_id") @db.ObjectId
+  name               String
+  description        String
+  difficulty         Difficulty
+  company            Company[]
+  starterCode        String
+  orginalCode        String
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  constraints        String[]
+  hints              String[]
+  example            TestCase[]       @relation("example")
+  hiddencases        TestCase[]       @relation("hiddencases")
+  supportedLanguages CodingLanguage[]
+  submissions        Submission[]
+  editorial          String
+  similarProblems    Editor[]         @relation("similar")
+  editor             Editor?          @relation("similar", fields: [editorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  editorId           String?
+  submittedBy        User[]
+  Chapter            Chapter[]
 }
 
 model Chapter {
-  id           String             @id @default(auto()) @map("_id") @db.ObjectId
-  title        String
-  description  String?
-  videoUrl     String?
-  docUrl       String?
-  position     Int
-  isPublished  Boolean            @default(false)
-  isFree       Boolean            @default(false)
-  attachment   ChapterAttachment? @relation(fields: [attachmentId], references: [id])
-  attachmentId String?            @unique
-  youtubeVideo String?
-  muxData      MuxData?
-  userProgress UserProgress[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Section   Section? @relation(fields: [sectionId], references: [id])
-  sectionId String?  @db.ObjectId
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  description   String?
+  videoUrl      String?
+  docUrl        String?
+  position      Int
+  isPublished   Boolean        @default(false)
+  isFree        Boolean        @default(false)
+  youtubeVideo  String?
+  muxData       MuxData?
+  userProgress  UserProgress[]
+  isEditorBased Boolean        @default(false)
+  editor        Editor?        @relation(fields: [editorId], references: [id])
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  Section       Section?       @relation(fields: [sectionId], references: [id])
+  sectionId     String?        @db.ObjectId
+  editorId      String?        @db.ObjectId
 }
 
 model MuxData {

@@ -43,7 +43,6 @@ const ChapterIdPage = async ({
     },
     include: {
       muxData: true,
-      attachment: true,
     },
   });
 

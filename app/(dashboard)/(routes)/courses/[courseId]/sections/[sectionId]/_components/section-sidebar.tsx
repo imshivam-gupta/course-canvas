@@ -51,9 +51,9 @@ export const SectionSidebar = async ({
 
   return (
     <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
-      <div className="p-8 flex flex-col border-b">
+      <div className="px-8 py-6 flex flex-col">
         <Link href={`/courses/${course.id}`}>
-        <h1 className="font-semibold">
+        <h1 className="font-semibold -mt-2">
           {course.title}
         </h1>
         </Link>
@@ -69,6 +69,7 @@ export const SectionSidebar = async ({
       <div className="flex flex-col w-full">
         {section.chapters.map((chapter) => (
           <SectionSidebarItem
+            sectionId={section.id}
             key={chapter.id}
             id={chapter.id}
             label={chapter.title}

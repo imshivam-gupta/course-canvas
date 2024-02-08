@@ -57,9 +57,10 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ className, children }) => {
 
 interface PreBlockProps {
   children: any;
+  className: string;
 }
 
-const PreBlock: React.FC<PreBlockProps> = ({ children, ...rest }) => {
+const PreBlock: React.FC<PreBlockProps> = ({ children, className,...rest }) => {
   // if (React.isValidElement(children) && 'type' in children.props) {
     return CodeBlock(children.props);
   // }

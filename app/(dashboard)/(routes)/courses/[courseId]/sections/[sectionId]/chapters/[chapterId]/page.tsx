@@ -1,8 +1,7 @@
-import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { File } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import Markdown from "markdown-to-jsx";
+// import Markdown from "markdown-to-jsx";
 import { getChapter } from "@/actions/get-chapter";
 import { Banner } from "@/components/banner";
 import { Separator } from "@/components/ui/separator";
@@ -18,123 +17,13 @@ import MyImage from "./_components/CustomImage";
 import Head from "next/head";
 import { getServerSession } from "next-auth";
 import YouTubePlayer from "./_components/youtube-video-player";
-
-interface CommonProps {
-  children: React.ReactNode;
-}
-
-const MyElement: React.FC<CommonProps> = ({ children, ...props }) => (
-  <div {...props}>{children}</div>
-);
-
-const MyTable: React.FC<CommonProps> = ({ children, ...props }) => (
-  <table {...props}>{children}</table>
-);
-
-const MyTableHead: React.FC<CommonProps> = ({ children, ...props }) => (
-  <thead {...props}>{children}</thead>
-);
-
-const MyTableBody: React.FC<CommonProps> = ({ children, ...props }) => (
-  <tbody {...props}>{children}</tbody>
-);
-
-const MyTableRow: React.FC<CommonProps> = ({ children, ...props }) => (
-  <tr {...props}>{children}</tr>
-);
-
-const MyTableData: React.FC<CommonProps> = ({ children, ...props }) => {
-  let txtclss;
-  if(children?.toString()==="Easy"){
-    txtclss = "text-green-700 dark:text-green-300 bg-green-100 dark:bg-green-700 p-2 rounded-xl";
-  } else if(children?.toString()==="Medium"){
-    txtclss = "text-yellow-700 dark:text-yellow-300 bg-yellow-100 dark:bg-yellow-700 p-2 rounded-xl";
-  } else if(children?.toString()==="Hard"){
-    txtclss = "text-red-700 dark:text-red-300 bg-red-100 dark:bg-red-700 p-2 rounded-xl";
-  }
-  return(
-  <td {...props}><span className={`${txtclss}`}>
-    {children}</span></td>)
-};
-
-const MyTableHeader: React.FC<CommonProps> = ({ children, ...props }) => (
-  <th {...props}>{children}</th>
-);
-
-const MyHeading1: React.FC<CommonProps> = ({ children, ...props }) => (
-  <h1 {...props}>{children}</h1>
-);
-
-const MyHeading2: React.FC<CommonProps> = ({ children, ...props }) => (
-  <h2 {...props}>{children}</h2>
-);
-
-const MyHeading3: React.FC<CommonProps> = ({ children, ...props }) => (
-  <h3 {...props}>{children}</h3>
-);
-
-const MyHeading4: React.FC<CommonProps> = ({ children, ...props }) => (
-  <h4 {...props}>{children}</h4>
-);
-
-const MyHeading5: React.FC<CommonProps> = ({ children, ...props }) => (
-  <h5 {...props}>{children}</h5>
-);
-
-const MyHeading6: React.FC<CommonProps> = ({ children, ...props }) => (
-  <h6 {...props}>{children}</h6>
-);
-
-const MyParagraph: React.FC<CommonProps> = ({ children, ...props }) => (
-  <p {...props}>{children}</p>
-);
-
-const MyEmphasis: React.FC<CommonProps> = ({ children, ...props }) => (
-  <em {...props}>{children}</em>
-);
-
-const MyStrong: React.FC<CommonProps> = ({ children, ...props }) => (
-  <strong {...props}>{children}</strong>
-);
-
-const MyDelete: React.FC<CommonProps> = ({ children, ...props }) => (
-  <del {...props}>{children}</del>
-);
-
-const MyLink: React.FC<CommonProps> = ({ children, ...props }) => (
-  <a {...props} target="_blank">
-      {children}
-  </a>
-);
-
-const MyList: React.FC<CommonProps> = ({ children, ...props }) => (
-  <ul {...props}>{children}</ul>
-);
-
-const MyOrderedList: React.FC<CommonProps> = ({ children, ...props }) => (
-  <ol {...props}>{children}</ol>
-);
-
-const MyListItem: React.FC<CommonProps> = ({ children, ...props }) => (
-  <li {...props}>{children}</li>
-);
-
-const MyBlockQuote: React.FC<CommonProps> = ({ children, ...props }) => (
-  <blockquote {...props}>{children}</blockquote>
-);
-
-const MyInlineCode: React.FC<CommonProps> = ({ children, ...props }) => (
-  <code {...props}>{children}</code>
-);
-
-const MyCode: React.FC<CommonProps> = ({ children, ...props }) => (
-  <pre {...props}>{children}</pre>
-);
-
-const MyHorizontalRule: React.FC<CommonProps> = ({ children, ...props }) => (
-  <hr {...props}>{children}</hr>
-);
-
+import rehypeRaw from 'rehype-raw'
+import { overrides } from "./_components/custom-components";
+import { cn } from "@/lib/utils";
+import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
+import rehypeHighlight from 'rehype-highlight'
 
 const ChapterIdPage = async ({
   params
@@ -189,7 +78,38 @@ const ChapterIdPage = async ({
   const isLocked = !chapter.isFree && !purchase;
   const completeOnEnd = !!purchase && !userProgress?.isCompleted;
 
+  const finalOverrides = {
+    ...overrides,
+    pre: ({node, ...props}) => <PreBlock {...props} className='bg-[#25252B] rounded-xl'/>,
+    img: ({node, ...props}) => <MyImage {...props} className='mt-2 rounded-xl'/>,
+    code({children, className, node, ...rest}) {
+      return <PreBlock className={cn('bg-[#25252B] rounded-xl',className)}>{children}</PreBlock>
+    }
+  }
+
+
+  const new_cont = `## Mc Culloh Pitts Neuron
+
+  <img src="https://utfs.io/f/888b5a93-dfef-42ca-b33e-75b12f545132-t8ftem.png" alt="McCulloh Pitts Neuron" position="left"/>
   
+  Mc Culloh and Pitts proposed a simplified model of the neuron in 1943. $g$ aggregates the inputs and the function $f$ takes a decision based on the aggregated input. The inputs can be inhibitory or excitatory. The model is a binary model, i.e. the output is binary.
+  
+  y is 0 if any of the inputs is inhibitory else:
+  
+  $$g(x_1, x_2, x_3, ..., x_n) = \\sum_{i=1}^{n} w_i x_i$$
+
+  $y = f(g(x_1, x_2, x_3, ..., x_n))$ = 1 if $g(x_1, x_2, x_3, ..., x_n)$ $\\geq$ $\\theta$ else 0
+  
+  $\\theta$ is the threshold. This is called Thresholding Logic.
+  
+  <img src="https://utfs.io/f/06ba104a-c93f-43ae-8cec-f30c78da6ae2-t7y02c.png" alt="Various Thresholding Logics" />
+  
+  
+  ## Or Logic
+  
+  <img src="https://utfs.io/f/c7631f34-2b50-4ee2-a061-cd45588f823f-t7xeho.png" alt="Or Logic" />
+  
+  A single MP neuron splits the input space(4 quadrants) into 2 halves. All inputs which produce an output 0 will be on one side ($\\Sigma_{i=1}^n x_i < \\theta$)`
   
   
   return ( 
@@ -225,7 +145,7 @@ const ChapterIdPage = async ({
          
         </div>
         <div>
-          <div className="p-4 flex flex-col md:flex-row items-center justify-between">
+          {/* <div className="p-4 flex flex-col md:flex-row items-center justify-between">
             <h2 className="text-2xl font-semibold mb-2">
               {chapter.title}
             </h2>
@@ -242,7 +162,7 @@ const ChapterIdPage = async ({
                 price={course.price!}
               />
             )}
-          </div>
+          </div> */}
           <Separator />
           <div>
             <Preview value={chapter.description!} />
@@ -273,7 +193,7 @@ const ChapterIdPage = async ({
           
           <div>
                <div>
-          <div className="p-4 flex flex-col md:flex-row items-center justify-between">
+          {/* <div className="p-4 flex flex-col md:flex-row items-center justify-between">
             <h2 className="text-2xl font-semibold mb-2">
               {chapter.title}
             </h2>
@@ -290,7 +210,7 @@ const ChapterIdPage = async ({
                 price={course.price!}
               />
             )}
-          </div>
+          </div> */}
           <Separator />
           <div>
           </div>
@@ -321,7 +241,7 @@ const ChapterIdPage = async ({
         {
         chapter.youtubeVideo ? 
         
-        <div className="flex flex-col mx-auto mb-6">
+        <div className="flex flex-col mr-auto mb-6">
         
           {chapter.youtubeVideo && (<YouTubePlayer videoId={chapter.youtubeVideo} />)}
       </div> : 
@@ -336,42 +256,25 @@ const ChapterIdPage = async ({
         </h1>
 }
           
-            <div className="page-body-course flex items-center justify-between px-20 pb-20 pt-6">
+            <div className="page-body-course   px-20 pb-20 pt-6">
  
-            <Markdown
-              options={{
-                overrides: {
-                  h1: { component: MyHeading1,props: {className: 'text-4xl font-bold text-black mt-5 mb-2',},},
-                  h2: { component: MyHeading2,props: {className: 'text-3xl font-bold text-black mt-5 mb-2',},},
-                  h3: { component: MyHeading3,props: {className: 'text-2xl font-bold text-black mt-5 mb-2',},},
-                  h4: { component: MyHeading4,props: {className: 'text-xl font-bold text-black mt-5 mb-2',},},
-                  h5: { component: MyHeading5,props: {className: 'text-lg font-bold text-black mt-5 mb-2',},},
-                  h6: { component: MyHeading6,props: {className: 'text-base font-bold text-black mt-5 mb-2',},},
-                  ul: { component: MyList,props: {className: 'marker:text-black list-disc list-inside mt-1 mb-4',},},
-                  ol: { component:MyOrderedList,props: {className: 'list-decimal list-inside marker:text-black  mt-1 mb-4 ',},},
-                  li: { component: MyListItem,props: {className: 'font-sans',},},
-                  p: { component: MyParagraph,props: {className: 'font-sans mb-1 prevent-select',},},
-                  em: { component: MyEmphasis,props: {className: '',},},
-                  strong: { component: MyStrong,props: {className: ' font-semibold prevent-select',},},
-                  del: { component: MyDelete,props: {className: ' ',},},
-                  a: { component: MyLink,props: {className: 'text-[#9aa4e7] hover:text-[#a591ee] font-semibold'},},
-                  blockquote: { component: MyBlockQuote,props: {className: 'border-l-4 border-gray-400 dark:border-gray-600 italic my-8 pl-8',},},
-                  code: { component:MyCode,props: {className: 'cd ',},},
-                  span: { component: MyCode,props: {className: 'sp ',},},
-                  table: { component: MyTable,props: {className: 'table-fixed w-full mt-6 mb-10 rounded-xl',},},
-                  thead: { component: MyTableHead,props: {className: 'bg-gray-200 dark:bg-gray-700 rounded-tl-xl',},},
-                  tbody: { component: MyTableBody,props: {className: 'divide-y divide-gray-200 dark:divide-gray-700',},},
-                  tr: { component: MyTableRow,props: {className: ' ',},},
-                  td: { component: MyTableData,props: {className: 'px-6 py-4 align-top whitespace-normal text-sm font-medium text-gray-800 dark:text-gray-200',},},
-                  th: { component: MyTableHeader,props: {className: 'px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase',},},
-                  hr: { component:MyHorizontalRule,props: {className: 'my-8',},},
-                  pre: { component: PreBlock,props: {className: 'bg-[#25252B] rounded-xl',},},
-                  img: { component: MyImage,props: {className: 'w-[75%]  mx-auto mt-2 rounded-xl ',},},
-                },
-              }}
+            <ReactMarkdown
+
+              components={finalOverrides}
+              remarkPlugins={[remarkGfm,remarkMath]}
+              rehypePlugins={[rehypeHighlight,rehypeKatex,rehypeRaw]}
+              
+              // options={{
+              //   overrides: {
+              //     ...overrides,
+              //     pre: { component: PreBlock,props: {className: 'bg-[#25252B] rounded-xl',},},
+              //     img: { component: MyImage,props: {className: 'w-[75%]  mx-auto mt-2 rounded-xl ',},},
+              //   },
+              // }}
             >
-              {matterResult.content}
-            </Markdown>
+              {/* {matterResult.content} */}
+              {new_cont}
+            </ReactMarkdown>
             </div>
           </div>
       }

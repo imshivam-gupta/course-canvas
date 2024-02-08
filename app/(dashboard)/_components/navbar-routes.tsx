@@ -4,7 +4,7 @@ import { Logo } from "./logo";
 import { UserButton } from "@/app/(dashboard)/_components/UserButton";
 import { isTeacher } from "@/lib/teacher";
 import { getServerSession } from "next-auth";
-import { redirect } from "next/dist/server/api-utils";
+import { redirect } from "next/navigation";
 // import { SearchInput } from "./search-input";
 
 interface NavLinkProps {
@@ -16,7 +16,7 @@ export const NavbarRoutes = async() => {
 
   const session = await getServerSession();
     if (!session?.user) {
-        redirect("/auth/signin");
+        redirect("/api/auth/signin");
     }
     const staticData = await fetch(`${process.env.NEXT_API_URL}/user`, {
         cache: 'no-cache',
