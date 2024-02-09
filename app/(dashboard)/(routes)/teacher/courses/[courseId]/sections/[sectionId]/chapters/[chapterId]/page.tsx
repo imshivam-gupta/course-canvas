@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
+import { ArrowLeft, Eye, LayoutDashboard, Video,Code } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
@@ -13,6 +13,7 @@ import { ChapterVideoForm } from "./_components/chapter-video-form";
 import { ChapterActions } from "./_components/chapter-actions";
 import { ChapterDocForm } from "./_components/chapter-doc-form";
 import { getServerSession } from "next-auth";
+import { EditorCategoryForm } from "./_components/editor-category";
 
 const ChapterIdPage = async ({
   params
@@ -43,6 +44,7 @@ const ChapterIdPage = async ({
     },
     include: {
       muxData: true,
+      editor:true
     },
   });
 
@@ -73,6 +75,8 @@ const ChapterIdPage = async ({
   const completionText = `(${completedFields}/${totalFields})`;
 
   const isComplete = requiredFields.every(Boolean);
+
+  const editors = await db.editor.findMany();
 
   return (
     <>
@@ -145,6 +149,22 @@ const ChapterIdPage = async ({
                 courseId={params.courseId}
                 chapterId={params.chapterId}
                 sectionId={params.sectionId}
+              />
+            </div>
+            <div className="mt-2">
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={Code} />
+                <h2 className="text-xl">
+                  IDE Based Problem
+                </h2>
+              </div>
+              <EditorCategoryForm
+                initialData={course}
+                courseId={course.id}
+                options={editors.map((editor) => ({
+                  label: editor.name,
+                  value: editor.id,
+                }))}
               />
             </div>
           </div>

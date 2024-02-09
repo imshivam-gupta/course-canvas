@@ -202,11 +202,11 @@ model Submission {
 model Editor {
   id                 String           @id @default(auto()) @map("_id") @db.ObjectId
   name               String
-  description        String
-  difficulty         Difficulty
+  description        String?
+  difficulty         Difficulty?
   company            Company[]
-  starterCode        String
-  orginalCode        String
+  starterCode        String?
+  orginalCode        String?
   createdAt          DateTime         @default(now())
   updatedAt          DateTime         @updatedAt
   constraints        String[]
@@ -215,12 +215,13 @@ model Editor {
   hiddencases        TestCase[]       @relation("hiddencases")
   supportedLanguages CodingLanguage[]
   submissions        Submission[]
-  editorial          String
+  editorial          String?
   similarProblems    Editor[]         @relation("similar")
   editor             Editor?          @relation("similar", fields: [editorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   editorId           String?
   submittedBy        User[]
   Chapter            Chapter[]
+  isPublished        Boolean          @default(false)
 }
 
 model Chapter {

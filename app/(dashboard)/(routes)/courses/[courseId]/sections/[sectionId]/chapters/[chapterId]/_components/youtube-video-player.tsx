@@ -7,7 +7,7 @@ const YouTubePlayer = ({ videoId }:any) => {
       <ReactPlayer
         url={`https://www.youtube.com/watch?v=${videoId}`}
         width={"100%"}
-        height={"91vh"}
+        height={'calc(100vh - 85px)'}
         playbackRate={2}
         controls={true}
         playing={true}
