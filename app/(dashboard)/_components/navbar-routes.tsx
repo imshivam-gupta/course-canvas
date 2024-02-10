@@ -1,10 +1,10 @@
 import { navRoutes } from "@/lib/utils";
 import { NavLink } from "./navlink";
 import { Logo } from "./logo";
-import { UserButton } from "@/app/(dashboard)/_components/UserButton";
 import { isTeacher } from "@/lib/teacher";
-import { getServerSession } from "next-auth";
+import { auth } from '@/auth'
 import { redirect } from "next/navigation";
+import { UserModal } from "@/components/modals/user-modal";
 // import { SearchInput } from "./search-input";
 
 interface NavLinkProps {
@@ -12,19 +12,9 @@ interface NavLinkProps {
   path: string;
 }
 
-export const NavbarRoutes = async() => {
+export const NavbarRoutes = async () => {
 
-  const session = await getServerSession();
-    if (!session?.user) {
-        redirect("/api/auth/signin");
-    }
-    const staticData = await fetch(`${process.env.NEXT_API_URL}/user`, {
-        cache: 'no-cache',
-        method: 'POST',
-        body: JSON.stringify({ email: session.user.email }),
-      });
-      const res = await staticData.json();
-      const userId = res.user.id;
+  const session = await auth();
 
   return (
     <>
@@ -52,15 +42,15 @@ export const NavbarRoutes = async() => {
           </Link>
         ) : null} */}
 
-      {isTeacher(userId) && (
+        {isTeacher(session?.user) && (
           <NavLink href="/teacher/courses" routename="Teacher mode" />
         )}
 
-        {navRoutes.map((route:NavLinkProps) => (
+        {navRoutes.map((route: NavLinkProps) => (
           <NavLink key={route.name} href={route.path} routename={route.name} />
         ))}
 
-       <UserButton />
+        <UserModal />
       </div>
     </>
   )

@@ -9,6 +9,44 @@ generator client {
   previewFeatures = ["fullTextSearch", "fullTextIndex", "referentialActions"]
 }
 
+enum Role {
+  USER
+  ADMIN
+  TEACHER
+  MENTOR
+}
+
+model User {
+  id                    String                 @id @default(auto()) @map("_id") @db.ObjectId
+  Submission            Submission[]
+  name                  String?
+  email                 String
+  emailVerified         DateTime?              @map("email_verified")
+  image                 String?                @default("https://utfs.io/f/851c7579-2eae-4519-a9ef-b9f573961121-nxkbtl.webp")
+  password              String?
+  role                  Role                   @default(USER)
+  accounts              Account[]
+  isTwoFactorEnabled    Boolean                @default(false)
+  twoFactorConfirmation TwoFactorConfirmation?
+  Editor                Editor?                @relation(fields: [editorId], references: [id])
+  editorId              String?                @db.ObjectId
+  Session               Session[]
+
+  @@unique(email)
+  @@map("users")
+}
+
+model Session {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String
+  expires      DateTime
+  sessionToken String   @unique
+  accessToken  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id])
+}
+
 model Account {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
   userId            String  @map("user_id") @db.String
@@ -29,48 +67,41 @@ model Account {
   @@map("accounts")
 }
 
-enum Role {
-  USER
-  ADMIN
-  TEACHER
-  MENTOR
-}
-
-model Session {
-  id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  sessionToken String   @unique @map("session_token")
-  userId       String   @map("user_id")
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("sessions")
-}
-
-model User {
-  id            String       @id @default(auto()) @map("_id") @db.ObjectId
-  email         String
-  role          Role         @default(USER)
-  name          String?
-  emailVerified DateTime?    @map("email_verified")
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  Submission    Submission[]
-  Editor        Editor?      @relation(fields: [editorId], references: [id])
-  editorId      String?      @db.ObjectId
-
-  @@unique(email)
-  @@map("users")
-}
-
 model VerificationToken {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  identifier String
-  token      String   @unique
-  expires    DateTime
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  token   String   @unique
+  expires DateTime
 
-  @@unique([identifier, token])
+  @@unique([email, token])
   @@map("verificationtokens")
+}
+
+model PasswordResetToken {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorToken {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorConfirmation {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
 }
 
 model Course {
@@ -205,6 +236,7 @@ model Editor {
   description        String?
   difficulty         Difficulty?
   company            Company[]
+  completeCode       String?
   starterCode        String?
   orginalCode        String?
   createdAt          DateTime         @default(now())

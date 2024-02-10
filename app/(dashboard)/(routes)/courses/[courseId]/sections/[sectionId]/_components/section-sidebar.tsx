@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { SectionProgress } from "@/components/section-progress";
 
 import { SectionSidebarItem } from "./section-sidebar-item";
-import { getServerSession } from "next-auth";
+import { auth } from '@/auth'
 import Link from "next/link";
 
 interface SectionSidebarProps {
@@ -23,22 +23,13 @@ export const SectionSidebar = async ({
   course,
   progressCount,
 }: SectionSidebarProps) => {
-    const session = await getServerSession();
-    if (!session?.user) {
-      return redirect("/");
+    
+    const session = await auth();
+    const userId = session?.user.id;
+    if(!userId) {
+      return redirect("/auth/signin");
     }
 
-    const staticData = await fetch(`${process.env.NEXT_API_URL}/user`, {
-        cache: 'no-cache',
-        method: 'POST',
-        body: JSON.stringify({ email: session.user.email }),
-    });
-    const res = await staticData.json();
-    const userId = res.user.id;
-
-  if (!userId) {
-    return redirect("/");
-  }
 
   const purchase = await db.purchase.findUnique({
     where: {

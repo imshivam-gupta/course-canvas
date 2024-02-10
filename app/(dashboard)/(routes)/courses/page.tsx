@@ -6,7 +6,7 @@ import { getCourses } from "@/actions/get-courses";
 import { CoursesList } from "@/components/courses-list";
 
 import { Categories } from "./_components/categories";
-import { getServerSession } from "next-auth";
+import { auth } from '@/auth'
 
 interface SearchPageProps {
   searchParams: {
@@ -18,20 +18,12 @@ interface SearchPageProps {
 const SearchPage = async ({
   searchParams
 }: SearchPageProps) => {
-    const session = await getServerSession();
-    if (!session?.user) {
-        redirect("/auth/signin");
+  
+    const session = await auth();
+    const userId = session?.user.id;
+    if(!userId) {
+      return redirect("/auth/signin");
     }
-    const staticData = await fetch(`${process.env.NEXT_API_URL}/user`, {
-        cache: 'no-cache',
-        method: 'POST',
-        body: JSON.stringify({ email: session.user.email }),
-      });
-      const res = await staticData.json();
-      const userId = res.user.id;
-  if (!userId) {
-    return redirect("/");
-  }
 
   const categories = await db.category.findMany({
     orderBy: {

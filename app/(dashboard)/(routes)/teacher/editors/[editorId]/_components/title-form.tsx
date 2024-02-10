@@ -22,20 +22,20 @@ import { useSession } from "next-auth/react";
 
 interface TitleFormProps {
   initialData: {
-    title: string;
+    name: string;
   };
-  courseId: string;
+  editorId: string;
 };
 
 const formSchema = z.object({
-  title: z.string().min(1, {
+  name: z.string().min(1, {
     message: "Title is required",
   }),
 });
 
 export const TitleForm = ({
   initialData,
-  courseId
+  editorId
 }: TitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const { data: session } = useSession();
@@ -53,12 +53,12 @@ export const TitleForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       
-      await axios.patch(`/api/courses/${courseId}`, values,{
+      await axios.patch(`/api/editors/${editorId}`, values,{
         headers: {
           'authorization': session.user.id
         },
       });
-      toast.success("Course updated");
+      toast.success("Editor updated");
       toggleEdit();
       router.refresh();
     } catch {
@@ -69,21 +69,21 @@ export const TitleForm = ({
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Course title
+        Editor name
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancel</>
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Edit title
+              Edit name
             </>
           )}
         </Button>
       </div>
       {!isEditing && (
         <p className="text-sm mt-2">
-          {initialData.title}
+          {initialData.name}
         </p>
       )}
       {isEditing && (
@@ -94,7 +94,7 @@ export const TitleForm = ({
           >
             <FormField
               control={form.control}
-              name="title"
+              name="name"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>

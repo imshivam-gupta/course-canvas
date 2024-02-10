@@ -12,7 +12,7 @@ import { ChapterAccessForm } from "./_components/chapter-access-form";
 import { ChapterVideoForm } from "./_components/chapter-video-form";
 import { ChapterActions } from "./_components/chapter-actions";
 import { ChapterDocForm } from "./_components/chapter-doc-form";
-import { getServerSession } from "next-auth";
+import { auth } from '@/auth'
 import { EditorCategoryForm } from "./_components/editor-category";
 
 const ChapterIdPage = async ({
@@ -20,19 +20,11 @@ const ChapterIdPage = async ({
 }: {
   params: { courseId: string; chapterId: string,sectionId:string }
 }) => {
-    const session = await getServerSession();
-    if (!session?.user) {
-      return redirect("/");
-    }
-
-    const staticData = await fetch(`${process.env.NEXT_API_URL}/user`, {
-        cache: 'no-cache',
-        method: 'POST',
-        body: JSON.stringify({ email: session.user.email }),
-    });
-    const res = await staticData.json();
-    const userId = res.user.id;
-
+  const session = await auth();
+  if (!session?.user) {
+    redirect("/auth/signin");
+  }
+  const userId = session?.user.id;
     if (!userId) {
         return redirect("/");
     }

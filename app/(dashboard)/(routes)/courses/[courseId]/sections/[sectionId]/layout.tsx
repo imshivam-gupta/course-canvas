@@ -5,7 +5,7 @@ import { getProgress } from "@/actions/get-progress";
 
 import { SectionSidebar } from "./_components/section-sidebar";
 import { SectionNavbar } from "./_components/section-navbar";
-import { getServerSession } from "next-auth";
+import { auth } from '@/auth'
 
 const SectionLayout = async ({
     children,
@@ -14,21 +14,10 @@ const SectionLayout = async ({
     children: React.ReactNode;
     params: { courseId: string,sectionId:string };
 }) => {
-    const session = await getServerSession();
-    if (!session?.user) {
-        return redirect("/");
-    }
-
-    const staticData = await fetch(`${process.env.NEXT_API_URL}/user`, {
-        cache: 'no-cache',
-        method: 'POST',
-        body: JSON.stringify({ email: session.user.email }),
-    });
-    const res = await staticData.json();
-    const userId = res.user.id;
-
-    if (!userId) {
-        return redirect("/")
+    const session = await auth();
+    const userId = session?.user.id;
+    if(!userId) {
+      return redirect("/auth/signin");
     }
 
     const course = await db.course.findUnique({

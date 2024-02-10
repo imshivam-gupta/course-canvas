@@ -8,7 +8,7 @@ import { Pencil } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Course } from "@prisma/client";
+import { Editor } from "@prisma/client";
 
 import {
   Form,
@@ -23,8 +23,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { useSession } from "next-auth/react";
 
 interface DescriptionFormProps {
-  initialData: Course;
-  courseId: string;
+  initialData: Editor;
+  editorId: string;
 };
 
 const formSchema = z.object({
@@ -35,7 +35,7 @@ const formSchema = z.object({
 
 export const DescriptionForm = ({
   initialData,
-  courseId
+  editorId
 }: DescriptionFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const { data: session } = useSession();
@@ -54,13 +54,12 @@ export const DescriptionForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      console.log(values);
-      await axios.patch(`/api/courses/${courseId}`, values,{
+      await axios.patch(`/api/editors/${editorId}`, values,{
         headers: {
           'authorization': session.user.id
         },
       });
-      toast.success("Course updated");
+      toast.success("Editor updated");
       toggleEdit();
       router.refresh();
     } catch {
@@ -71,7 +70,7 @@ export const DescriptionForm = ({
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Course description
+        Editor description
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancel</>
@@ -105,7 +104,7 @@ export const DescriptionForm = ({
                   <FormControl>
                     <Textarea
                       disabled={isSubmitting}
-                      placeholder="e.g. 'This course is about...'"
+                      placeholder="e.g. 'This editor is about...'"
                       {...field}
                     />
                   </FormControl>

@@ -101,7 +101,6 @@ export const getChapter = async ({
       purchase,
     };
   } catch (error) {
-    console.log("[GET_CHAPTER]", error);
     return {
       chapter: null,
       course: null,

@@ -7,7 +7,6 @@ export async function POST(req: Request){
         const user = await db.user.findFirst({where:{email:user_email}});
         return NextResponse.json({user});
     } catch(e){
-        console.log(e);
         return new NextResponse("Internal Error", { status: 500 });
     }
 }

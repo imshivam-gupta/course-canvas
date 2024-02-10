@@ -117,31 +117,6 @@ const MyHorizontalRule: React.FC<CommonProps> = ({ children, ...props }) => (
 );
 
 export const overrides = {
-    // h1: { component: MyHeading1, props: { className: 'text-4xl font-bold text-black mt-5 mb-2', }, },
-    // h2: { component: MyHeading2, props: { className: 'text-3xl font-bold text-black mt-5 mb-2', }, },
-    // h3: { component: MyHeading3, props: { className: 'text-2xl font-bold text-black mt-5 mb-2', }, },
-    // h4: { component: MyHeading4, props: { className: 'text-xl font-bold text-black mt-5 mb-2', }, },
-    // h5: { component: MyHeading5, props: { className: 'text-lg font-bold text-black mt-5 mb-2', }, },
-    // h6: { component: MyHeading6, props: { className: 'text-base font-bold text-black mt-5 mb-2', }, },
-    // ul: { component: MyList, props: { className: 'marker:text-black list-disc list-inside mt-1 mb-4', }, },
-    // ol: { component: MyOrderedList, props: { className: 'list-decimal list-inside marker:text-black  mt-1 mb-4 ', }, },
-    // li: { component: MyListItem, props: { className: 'font-sans', }, },
-    // p: { component: MyParagraph, props: { className: 'font-sans mb-1 prevent-select', }, },
-    // em: { component: MyEmphasis, props: { className: '', }, },
-    // strong: { component: MyStrong, props: { className: ' font-semibold prevent-select', }, },
-    // del: { component: MyDelete, props: { className: ' ', }, },
-    // a: { component: MyLink, props: { className: 'text-[#9aa4e7] hover:text-[#a591ee] font-semibold' }, },
-    // blockquote: { component: MyBlockQuote, props: { className: 'border-l-4 border-gray-400 dark:border-gray-600 italic my-8 pl-8', }, },
-    // code: { component: MyCode, props: { className: 'cd ', }, },
-    // span: { component: MyCode, props: { className: 'sp ', }, },
-    // table: { component: MyTable, props: { className: 'table-fixed w-full mt-6 mb-10 rounded-xl', }, },
-    // thead: { component: MyTableHead, props: { className: 'bg-gray-200 dark:bg-gray-700 rounded-tl-xl', }, },
-    // tbody: { component: MyTableBody, props: { className: 'divide-y divide-gray-200 dark:divide-gray-700', }, },
-    // tr: { component: MyTableRow, props: { className: ' ', }, },
-    // td: { component: MyTableData, props: { className: 'px-6 py-4 align-top whitespace-normal text-sm font-medium text-gray-800 dark:text-gray-200', }, },
-    // th: { component: MyTableHeader, props: { className: 'px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase', }, },
-    // hr: { component: MyHorizontalRule, props: { className: 'my-8', }, },
-    
     h1({children, className, node, ...rest}:any){
         return <MyHeading1 {...rest} className={cn('text-4xl font-bold text-black mt-5 mb-2',className)}>{children}</MyHeading1>
     },
@@ -167,10 +142,10 @@ export const overrides = {
         return <MyOrderedList {...rest} className={cn('list-decimal list-inside marker:text-black  mt-1 mb-4 ',className)}>{children}</MyOrderedList>
     },
     li({children, className, node, ...rest}:any){
-        return <MyListItem {...rest} className={cn('font-sans',className)}>{children}</MyListItem>
+        return <MyListItem {...rest} className={cn('font-sans text-md font-medium',className)}>{children}</MyListItem>
     },
     p({children, className, node, ...rest}:any){
-        return <MyParagraph {...rest} className={cn('font-sans mb-1 prevent-select',className)}>{children}</MyParagraph>
+        return <MyParagraph {...rest} className={cn('font-sans font-medium text-md mb-1 prevent-select',className)}>{children}</MyParagraph>
     },
     em({children, className, node, ...rest}:any){
         return <MyEmphasis {...rest} className={cn('',className)}>{children}</MyEmphasis>

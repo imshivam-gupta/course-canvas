@@ -2,7 +2,7 @@ import { isTeacher } from "@/lib/teacher";
 import { navRoutes } from "@/lib/utils";
 import { NavLink } from "../app/(dashboard)/_components/navlink";
 import { Logo } from "../app/(dashboard)/_components/logo";
-import { UserButton } from "@/app/(dashboard)/_components/UserButton";
+import { UserModal } from "./modals/user-modal";
 // import { SearchInput } from "./search-input";
 
 interface NavLinkProps {
@@ -43,11 +43,11 @@ export const NavbarRoutes = () => {
           <NavLink href="/teacher/courses" routename="Teacher mode" />
         )}
 
-        {navRoutes.map((route:NavLinkProps) => (
+        {navRoutes.map((route: NavLinkProps) => (
           <NavLink key={route.name} href={route.path} routename={route.name} />
         ))}
 
-       <UserButton />
+        <UserModal />
       </div>
     </>
   )

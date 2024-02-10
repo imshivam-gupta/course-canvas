@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { getServerSession } from "next-auth/next";
+import { auth } from '@/auth'
 import { Inter } from "next/font/google";
 import { ToastProvider } from '@/components/providers/toaster-provider'
 import "./globals.css";
-import { redirect } from "next/navigation";
-import { NextProvider } from "./nextprovider";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +17,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession();
+  const session = await auth();
 
   return (
+    <SessionProvider session={session} basePath="http://localhost:3000/api/auth">
     <html lang="en">
       <head>
         <link
@@ -33,9 +33,10 @@ export default async function RootLayout({
       </head>
       <body className={inter.className}>
         <ToastProvider />
-        <NextProvider session={session}>{children}</NextProvider>
+        {children}
       </body>
 
     </html>
+    </SessionProvider>
   );
 }

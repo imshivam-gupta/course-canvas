@@ -13,13 +13,13 @@ import { useSession } from "next-auth/react";
 
 interface ActionsProps {
   disabled: boolean;
-  courseId: string;
+  editorId: string;
   isPublished: boolean;
 };
 
 export const Actions = ({
   disabled,
-  courseId,
+  editorId,
   isPublished
 }: ActionsProps) => {
   const router = useRouter();
@@ -32,14 +32,14 @@ export const Actions = ({
       setIsLoading(true);
 
       if (isPublished) {
-        await axios.patch(`/api/courses/${courseId}/unpublish`,{},{
+        await axios.patch(`/api/courses/${editorId}/unpublish`,{},{
           headers: {
             'authorization': session.user.id
           },
         });
         toast.success("Course unpublished");
       } else {
-        await axios.patch(`/api/courses/${courseId}/publish`,{},{
+        await axios.patch(`/api/courses/${editorId}/publish`,{},{
           headers: {
             'authorization': session.user.id
           },
@@ -60,7 +60,7 @@ export const Actions = ({
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/courses/${courseId}`,{
+      await axios.delete(`/api/courses/${editorId}`,{
         headers: {
           'authorization': session.user.id
         },

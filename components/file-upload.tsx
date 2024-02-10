@@ -14,7 +14,6 @@ export const FileUpload = ({
   onChange,
   endpoint
 }: FileUploadProps) => {
-  console.log(endpoint);
   return (
     <UploadDropzone
       endpoint={endpoint}

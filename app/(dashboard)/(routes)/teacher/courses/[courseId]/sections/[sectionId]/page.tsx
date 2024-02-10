@@ -10,25 +10,18 @@ import { DescriptionForm } from "./_components/description-form";
 import { ImageForm } from "./_components/image-form";
 import { ChaptersForm } from "./_components/chapters-form";
 import { Actions } from "./_components/actions";
-import { getServerSession } from "next-auth";
+import { auth } from '@/auth'
 
 const SectionIdPage = async ({
   params
 }: {
   params: { sectionId: string,courseId: string}
 }) => {
-    const session = await getServerSession();
-    if (!session?.user) {
-      return redirect("/");
-    }
-
-    const staticData = await fetch(`${process.env.NEXT_API_URL}/user`, {
-        cache: 'no-cache',
-        method: 'POST',
-        body: JSON.stringify({ email: session.user.email }),
-    });
-    const res = await staticData.json();
-    const userId = res.user.id;
+  const session = await auth();
+  if (!session?.user) {
+    redirect("/auth/signin");
+  }
+  const userId = session?.user.id;
 
     if (!userId) {
         return redirect("/");

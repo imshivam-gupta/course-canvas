@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 
 const MyImage = ({ alt = "Alt", ...props }) => {
     const [isClient, setIsClient] = useState(false);
-    console.log(props)
     useEffect(() => setIsClient(true), []);
     if (!isClient) {
       return null;

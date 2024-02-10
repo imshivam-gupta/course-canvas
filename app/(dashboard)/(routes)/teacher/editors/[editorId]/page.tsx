@@ -12,30 +12,24 @@ import { CategoryForm } from "./_components/category-form";
 import { PriceForm } from "./_components/price-form";
 import { AttachmentForm } from "./_components/attachment-form";
 import { Actions } from "./_components/actions";
-import { getServerSession } from "next-auth";
+import { auth } from '@/auth'
 import { SectionsForm } from "./_components/sections-form";
+import { DifficultyForm } from "./_components/difficulty-form";
 
 const EditorIdPage = async ({
   params
 }: {
   params: { editorId: string }
 }) => {
-    const session = await getServerSession();
-    if (!session?.user) {
-      return redirect("/");
-    }
+  const session = await auth();
+  if (!session?.user) {
+    redirect("/auth/signin");
+  }
+  const userId = session?.user.id;
 
-    const staticData = await fetch(`${process.env.NEXT_API_URL}/user`, {
-        cache: 'no-cache',
-        method: 'POST',
-        body: JSON.stringify({ email: session.user.email }),
-    });
-    const res = await staticData.json();
-    const userId = res.user.id;
-
-    if (!userId) {
-        return redirect("/");
-    }
+  if (!userId) {
+    return redirect("/");
+  }
 
   const editor = await db.editor.findUnique({
     where: {
@@ -52,15 +46,17 @@ const EditorIdPage = async ({
     },
   });
 
-  const categories = await db.category.findMany({
-    orderBy: {
-      name: "asc",
-    },
-  });
 
   if (!editor) {
     return redirect("/");
   }
+
+  const difficulties = [
+    { id: "easy", name: "Easy" },
+    { id: "medium", name: "Medium" },
+    { id: "hard", name: "Hard" },
+    { id: "godlevel", name: "God Level" }
+  ];
 
   const requiredFields = [
     editor.name,
@@ -121,41 +117,50 @@ const EditorIdPage = async ({
               initialData={editor}
               editorId={editor.id}
             />
-            <ImageForm
+            <DifficultyForm
               initialData={editor}
               editorId={editor.id}
+              options={difficulties.map((difficulty) => ({
+                label: difficulty.name,
+                value: difficulty.id,
+              }))}
             />
-            <CategoryForm
+
+            {/* <CategoryForm
               initialData={editor}
               editorId={editor.id}
               options={categories.map((category) => ({
                 label: category.name,
                 value: category.id,
               }))}
-            />
-                        <div className="mt-6">
-              <div className="flex items-center gap-x-2">
-                <IconBadge icon={CircleDollarSign} />
-                <h2 className="text-xl">
-                  Sell your editor
-                </h2>
-              </div>
-              <PriceForm
-                initialData={editor}
-                editorId={editor.id}
-              />
-            </div>
+            /> */}
+           
             <div className="mt-6">
+
+
               <div className="flex items-center gap-x-2">
-                <IconBadge icon={File} />
+                <IconBadge icon={LayoutDashboard} />
                 <h2 className="text-xl">
-                  Resources & Attachments
+                  Add Testcase
                 </h2>
               </div>
-              <AttachmentForm
+              <TitleForm
                 initialData={editor}
                 editorId={editor.id}
               />
+              <DescriptionForm
+                initialData={editor}
+                editorId={editor.id}
+              />
+              <DifficultyForm
+                initialData={editor}
+                editorId={editor.id}
+                options={difficulties.map((difficulty) => ({
+                  label: difficulty.name,
+                  value: difficulty.id,
+                }))}
+              />
+
             </div>
           </div>
           <div className="space-y-6">
@@ -166,16 +171,16 @@ const EditorIdPage = async ({
                   Course Sections
                 </h2>
               </div>
-              <SectionsForm
+              {/* <SectionsForm
                 initialData={editor}
                 editorId={editor.id}
-              />
+              /> */}
             </div>
           </div>
         </div>
       </div>
     </>
-   );
+  );
 }
- 
+
 export default EditorIdPage;
