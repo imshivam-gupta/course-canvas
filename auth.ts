@@ -27,7 +27,7 @@ export const {
       })
     }
   },
-  adapter: PrismaAdapter(db),
+  adapter: PrismaAdapter(db) as any,
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60,

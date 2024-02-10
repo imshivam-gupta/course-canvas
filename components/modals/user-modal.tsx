@@ -302,11 +302,13 @@ export const UserModal = ({
     const [infoCard, setInfoCard] = useState(true);
     const Comp = "button";
 
+    if(!user) return null;
+
     return (
         <Dialog.Root>
             <Dialog.Trigger asChild>
                 <div className="flex gap-x-2 ml-auto cursor-pointer">
-                    <img src={user.image as string} className="h-8 w-8 mr-2 rounded-full" />
+                    <img src={user?.image as string} className="h-8 w-8 mr-2 rounded-full" />
                 </div>
             </Dialog.Trigger>
             <Dialog.Portal>

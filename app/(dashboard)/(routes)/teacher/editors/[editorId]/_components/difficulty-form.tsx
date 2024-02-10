@@ -57,7 +57,7 @@ export const DifficultyForm = ({
     try {
       await axios.patch(`/api/editors/${editorId}`, values,{
         headers: {
-          'authorization': session.user.id
+          'authorization': session?.user.id
         },
       }
       );
@@ -69,7 +69,7 @@ export const DifficultyForm = ({
     }
   }
 
-  const selectedOption = options.find((option) => option.value === initialData.difficultyId);
+  const selectedOption = options.find((option) => option.value === initialData.difficulty);
 
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
@@ -107,7 +107,7 @@ export const DifficultyForm = ({
                 <FormItem>
                   <FormControl>
                     <Combobox
-                      options={...options}
+                      options={options}
                       {...field}
                     />
                   </FormControl>

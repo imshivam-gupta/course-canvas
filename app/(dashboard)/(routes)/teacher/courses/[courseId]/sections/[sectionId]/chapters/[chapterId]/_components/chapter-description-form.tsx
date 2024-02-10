@@ -59,7 +59,7 @@ export const ChapterDescriptionForm = ({
     try {
       await axios.patch(`/api/courses/${courseId}/sections/${sectionId}/chapters/${chapterId}`, values,{
         headers:{
-          'authorization': session.user.id
+          'authorization': session?.user.id
         }});
       toast.success("Chapter updated");
       toggleEdit();

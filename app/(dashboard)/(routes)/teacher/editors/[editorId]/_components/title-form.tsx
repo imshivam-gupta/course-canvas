@@ -55,7 +55,7 @@ export const TitleForm = ({
       
       await axios.patch(`/api/editors/${editorId}`, values,{
         headers: {
-          'authorization': session.user.id
+          'authorization': session?.user.id
         },
       });
       toast.success("Editor updated");

@@ -45,7 +45,7 @@ export const columns: ColumnDef<Course>[] = [
     },
     cell: ({ row }) => {
       const difficulty = row.getValue("difficulty");
-      return <div>{difficulty}</div>
+      return <div>{""}</div>
     }
   },
   {

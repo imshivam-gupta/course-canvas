@@ -31,8 +31,8 @@ const SectionIdPage = async ({
     const course_id_mon = ObjectId.createFromHexString(params.courseId);
     const section = await db.section.findUnique({
       where: {
-        id: section_id_mon,
-        courseId: course_id_mon
+        id: section_id_mon as any,
+        courseId: course_id_mon as any,
       },
       include: {
         chapters: {
@@ -50,9 +50,9 @@ const SectionIdPage = async ({
     },
   });
 
-  // if (!section) {
-  //   return redirect("/");
-  // }
+  if (!section) {
+    return redirect("/");
+  }
 
   const requiredFields = [
     section.title,

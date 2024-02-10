@@ -186,6 +186,6 @@ export const overrides = {
     hr({children, className, node, ...rest}:any){
         return <MyHorizontalRule {...rest} className={cn('my-8',className)}>{children}</MyHorizontalRule>
     },
-    math: ({ value }) => <BlockMath>{value}</BlockMath>,
-    inlineMath: ({ value }) => <InlineMath>{value}</InlineMath>,
+    math: ({ value }:any) => <BlockMath>{value}</BlockMath>,
+    inlineMath: ({ value }:any) => <InlineMath>{value}</InlineMath>,
 };

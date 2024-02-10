@@ -61,7 +61,7 @@ export const SectionsForm = ({
 
       await axios.post(`/api/courses/${courseId}/sections`, values,{
         headers:{
-          'authorization': session.user.id
+          'authorization': session?.user.id
         }
       });
       toast.success("Section created");

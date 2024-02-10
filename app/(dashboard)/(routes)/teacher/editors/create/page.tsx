@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
 
@@ -29,9 +29,7 @@ const formSchema = z.object({
 
 const CreatePage = () => {
   const { data: session } = useSession();
-  if (!session?.user) {
-    return redirect("/signin");
-  } else {
+
     const router = useRouter();
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
@@ -44,7 +42,7 @@ const CreatePage = () => {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
       try {
-        const response = await axios.post("/api/editors", { ...values, teacherId: session.user.id });
+        const response = await axios.post("/api/editors", { ...values, teacherId: session?.user.id });
         router.push(`/teacher/editors/${response.data.id}`);
         toast.success("Problem created");
       } catch {
@@ -106,7 +104,7 @@ const CreatePage = () => {
         </div>
       </div>
     );
-  }
+
 }
 
 export default CreatePage;

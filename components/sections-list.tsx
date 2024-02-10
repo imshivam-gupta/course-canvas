@@ -1,16 +1,16 @@
-import { Category, Section } from "@prisma/client";
+import { Category, Chapter, Course, Section } from "@prisma/client";
 
 import { SectionCard } from "@/components/section-card";
 
-type SectionWithProgressWithCategory = Section & {
-  category: Category | null;
-  chapters: { id: string }[];
-  progress: number | null;
-    courseId: string;
-};
+// type SectionWithProgressWithCategory = Section & {
+//   category: Category | null;
+//   chapters: Chapter[];
+//   course: Course
+//   courseId: string;
+// };
 
 interface SectionsListProps {
-  items: SectionWithProgressWithCategory[];
+  items: any[];
 }
 
 export const SectionsList = ({

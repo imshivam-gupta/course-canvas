@@ -57,7 +57,7 @@ export const TitleForm = ({
     try {
       await axios.patch(`/api/courses/${courseId}/sections/${sectionId}`, values,{
         headers: {
-          'authorization': session.user.id
+          'authorization': session?.user.id
         },
       });
       toast.success("Section updated");

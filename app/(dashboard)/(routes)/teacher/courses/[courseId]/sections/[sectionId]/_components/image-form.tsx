@@ -40,7 +40,7 @@ export const ImageForm = ({
     try {
       await axios.patch(`/api/courses/${courseId}/sections/${sectionId}`, values,{
         headers: {
-          'authorization': session.user.id
+          'authorization': session?.user.id
         },
       });
       toast.success("Course updated");

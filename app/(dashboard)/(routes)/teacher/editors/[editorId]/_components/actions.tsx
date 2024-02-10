@@ -34,14 +34,14 @@ export const Actions = ({
       if (isPublished) {
         await axios.patch(`/api/courses/${editorId}/unpublish`,{},{
           headers: {
-            'authorization': session.user.id
+            'authorization': session?.user.id
           },
         });
         toast.success("Course unpublished");
       } else {
         await axios.patch(`/api/courses/${editorId}/publish`,{},{
           headers: {
-            'authorization': session.user.id
+            'authorization': session?.user.id
           },
         });
         toast.success("Course published");
@@ -62,7 +62,7 @@ export const Actions = ({
 
       await axios.delete(`/api/courses/${editorId}`,{
         headers: {
-          'authorization': session.user.id
+          'authorization': session?.user.id
         },
       });
 

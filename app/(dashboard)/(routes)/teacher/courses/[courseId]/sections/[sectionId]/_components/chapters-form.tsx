@@ -62,7 +62,7 @@ export const ChaptersForm = ({
     try {
       await axios.post(`/api/courses/${courseId}/sections/${sectionId}/chapters`, values,{
         headers:{
-          'authorization': session.user.id
+          'authorization': session?.user.id
         }});
       toast.success("Chapter created");
       toggleCreating();
@@ -80,7 +80,7 @@ export const ChaptersForm = ({
         list: updateData
       },{
         headers:{
-          'authorization': session.user.id
+          'authorization': session?.user.id
         }
       
       });

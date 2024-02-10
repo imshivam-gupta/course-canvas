@@ -56,7 +56,7 @@ export const EditorCategoryForm = ({
     try {
       await axios.patch(`/api/courses/${courseId}`, values,{
         headers: {
-          'authorization': session.user.id
+          'authorization': session?.user.id
         },
       }
       );
@@ -106,7 +106,7 @@ export const EditorCategoryForm = ({
                 <FormItem>
                   <FormControl>
                     <Combobox
-                      options={...options}
+                      options={options}
                       {...field}
                     />
                   </FormControl>

@@ -26,6 +26,10 @@ const SectionLayout = async ({
         }
     });
 
+    if (!course) {
+        return redirect("/");
+    }
+
     const section = await db.section.findFirst({
         where:{
             courseId: params.courseId

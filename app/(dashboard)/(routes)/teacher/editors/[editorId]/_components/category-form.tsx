@@ -57,7 +57,7 @@ export const CategoryForm = ({
     try {
       await axios.patch(`/api/courses/${courseId}`, values,{
         headers: {
-          'authorization': session.user.id
+          'authorization': session?.user.id
         },
       }
       );
@@ -107,7 +107,7 @@ export const CategoryForm = ({
                 <FormItem>
                   <FormControl>
                     <Combobox
-                      options={...options}
+                      options={options}
                       {...field}
                     />
                   </FormControl>

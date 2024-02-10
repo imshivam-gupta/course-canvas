@@ -36,14 +36,14 @@ export const Actions = ({
       if (isPublished) {
         await axios.patch(`/api/courses/${courseId}/sections/${sectionId}/unpublish`,{},{
           headers: {
-            'authorization': session.user.id
+            'authorization': session?.user.id
           },
         });
         toast.success("Section unpublished");
       } else {
         await axios.patch(`/api/courses/${courseId}/sections/${sectionId}/publish`,{},{
           headers: {
-            'authorization': session.user.id
+            'authorization': session?.user.id
           },
         });
         toast.success("Section published");
@@ -63,7 +63,7 @@ export const Actions = ({
       setIsLoading(true);
       await axios.delete(`/api/courses/${courseId}/sections/${sectionId}`,{
         headers: {
-          'authorization': session.user.id
+          'authorization': session?.user.id
         },
       });
 

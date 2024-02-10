@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(req: Request){
     try{
-        const user_email = req.body.email;
+        const {user_email} = await req.json();
         const user = await db.user.findFirst({where:{email:user_email}});
         return NextResponse.json({user});
     } catch(e){

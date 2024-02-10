@@ -1,5 +1,5 @@
 import { User } from "@prisma/client";
 
-export const isTeacher = (user?: User | null) => {
+export const isTeacher = (user?: any) => {
     return user?.role === 'TEACHER';
 }

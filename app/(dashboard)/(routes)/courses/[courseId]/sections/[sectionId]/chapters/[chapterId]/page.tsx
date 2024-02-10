@@ -6,7 +6,7 @@ import { getChapter } from "@/actions/get-chapter";
 import { Banner } from "@/components/banner";
 import { Separator } from "@/components/ui/separator";
 import { Preview } from "@/components/preview";
-import { MDXRemote } from 'next-mdx-remote/rsc'
+// import { MDXRemote } from 'next-mdx-remote/rsc'
 import { VideoPlayer } from "./_components/video-player";
 import { CourseEnrollButton } from "./_components/course-enroll-button";
 import { CourseProgressButton } from "./_components/course-progress-button";
@@ -73,9 +73,9 @@ const ChapterIdPage = async ({
 
   const finalOverrides = {
     ...overrides,
-    pre: ({ node, ...props }) => <PreBlock {...props} className='bg-[#25252B] rounded-xl' />,
-    img: ({ node, ...props }) => <MyImage {...props} className='mt-2 rounded-xl' />,
-    code({ children, className, node, ...rest }) {
+    pre: ({ node, ...props }:any) => <PreBlock {...props} className='bg-[#25252B] rounded-xl' />,
+    img: ({ node, ...props }:any) => <MyImage {...props} className='mt-2 rounded-xl' />,
+    code({ children, className, node, ...rest }:any) {
       return <PreBlock className={cn('bg-[#25252B] rounded-xl', className)}>{children}</PreBlock>
     }
   }

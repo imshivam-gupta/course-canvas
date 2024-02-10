@@ -37,13 +37,13 @@ export const ChapterActions = ({
       if (isPublished) {
         await axios.patch(`/api/courses/${courseId}/sections/${sectionId}/chapters/${chapterId}/unpublish`,{},{
           headers:{
-            'authorization': session.user.id
+            'authorization': session?.user.id
           }});
         toast.success("Chapter unpublished");
       } else {
         await axios.patch(`/api/courses/${courseId}/sections/${sectionId}/chapters/${chapterId}/publish`,{},{
           headers:{
-            'authorization': session.user.id
+            'authorization': session?.user.id
           }});
         toast.success("Chapter published");
       }
@@ -62,7 +62,7 @@ export const ChapterActions = ({
 
       await axios.delete(`/api/courses/${courseId}/sections/${sectionId}/chapters/${chapterId}`,{
         headers:{
-          'authorization': session.user.id
+          'authorization': session?.user.id
         }});
 
       toast.success("Chapter deleted");

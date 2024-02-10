@@ -55,7 +55,7 @@ export const PriceForm = ({
     try {
       await axios.patch(`/api/courses/${courseId}`, values,{
         headers: {
-          'authorization': session.user.id
+          'authorization': session?.user.id
         },
       });
       toast.success("Course updated");

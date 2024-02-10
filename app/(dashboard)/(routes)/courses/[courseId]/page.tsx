@@ -40,7 +40,7 @@ const CourseIdPage = async ({
          <h1 className="flex flex-row justify-center text-2xl  font-medium group-hover:text-sky-700 transition line-clamp-2">
         {course.title}
       </h1>
-        <SectionsList items={course.sections}  />
+        <SectionsList items={course.sections} />
     </div>
   )
 }
