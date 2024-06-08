@@ -43,7 +43,7 @@ export default async function Dashboard() {
         {/* <!-- What's Different --> */}
         <div className="flex flex-col space-y-12 w-5/12 pr-6">
           <h2 className="text-4xl font-bold text-center md:text-left">
-            What's different about Course Canvas?
+            Whats different about Course Canvas?
           </h2>
           <p className="max-w-md text-lg text-center text-black md:text-left">
           Course Canvas stands out for its commitment to fostering collaborative learning in a student-friendly environment. Unlike other platforms, Course Canvas offers a completely free space for sharing knowledge, hosting resources, and seeking answers within a vibrant community of learners and experts. Join us today and experience the difference!

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 
-const DoubtSection = ({ setDoubt }) => {
+const DoubtSection = ({ setDoubt }:any) => {
   return (
     <div className="border border-theme border-[0.2px] min-h-[60vh] min-w-[20vw] bg-white rounded-t-xl shadow-md flex flex-col">
       <div className="flex justify-between items-center px-4 py-3">
