@@ -5,11 +5,12 @@
  */
 export const publicRoutes = [
     "/",
-    "/auth/new-verification"
+    "/auth/new-verification",
+    "/api/uploadthing",
   ];
   
   /**
-   * An array of routes that are used for authentication
+   * An array of routes thpublicat are used for authentication
    * These routes will redirect logged in users to /settings
    * @type {string[]}
    */

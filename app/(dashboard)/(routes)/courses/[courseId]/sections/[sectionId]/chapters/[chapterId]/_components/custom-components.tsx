@@ -142,10 +142,10 @@ export const overrides = {
         return <MyOrderedList {...rest} className={cn('list-decimal list-inside marker:text-black  mt-1 mb-4 ',className)}>{children}</MyOrderedList>
     },
     li({children, className, node, ...rest}:any){
-        return <MyListItem {...rest} className={cn('font-sans text-md font-medium',className)}>{children}</MyListItem>
+        return <MyListItem {...rest} className={cn('text-md font-medium',className)}>{children}</MyListItem>
     },
     p({children, className, node, ...rest}:any){
-        return <MyParagraph {...rest} className={cn('font-sans font-medium text-md mb-1 prevent-select',className)}>{children}</MyParagraph>
+        return <MyParagraph {...rest} className={cn('font-medium text-md mb-1 prevent-select',className)}>{children}</MyParagraph>
     },
     em({children, className, node, ...rest}:any){
         return <MyEmphasis {...rest} className={cn('',className)}>{children}</MyEmphasis>

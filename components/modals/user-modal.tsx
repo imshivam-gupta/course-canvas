@@ -251,6 +251,12 @@ const SettingsCard = ({toggler}:any) => {
                                                 <SelectItem value={Role.USER}>
                                                     User
                                                 </SelectItem>
+                                                <SelectItem value={Role.TEACHER}>
+                                                    Teacher
+                                                    </SelectItem>
+                                                <SelectItem value={Role.MENTOR}>
+                                                    Mentor
+                                                    </SelectItem>
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />
