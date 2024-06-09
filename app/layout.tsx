@@ -29,7 +29,7 @@ export default async function RootLayout({
   const session = await auth();
 
   return (
-    <SessionProvider session={session} basePath="http://localhost:3000/api/auth">
+    <SessionProvider session={session} basePath={`${process.env.NEXT_API_URL}${"/auth"}`}>
     <html lang="en">
       <head>
         <link
