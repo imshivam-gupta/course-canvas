@@ -32,6 +32,7 @@ const SectionLayout = async ({
 
     const section = await db.section.findFirst({
         where:{
+            id: params.sectionId,
             courseId: params.courseId
         },
         include:{

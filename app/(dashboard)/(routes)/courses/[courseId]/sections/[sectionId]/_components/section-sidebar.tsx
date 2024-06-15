@@ -42,7 +42,7 @@ export const SectionSidebar = async ({
 
   return (
     <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
-      <div className="px-8 py-6 flex flex-col">
+      <div className="px-8 h-[80px] flex flex-col justify-center">
         <Link href={`/courses/${course.id}`}>
         <h1 className="font-semibold -mt-2">
           {course.title}
