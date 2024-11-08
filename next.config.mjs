@@ -2,7 +2,8 @@
 const nextConfig = {
     images: {
         domains: [
-          "utfs.io"
+          "utfs.io",
+            "myaws3020.s3.ap-south-1.amazonaws.com"
         ]
       },
       typescript: {

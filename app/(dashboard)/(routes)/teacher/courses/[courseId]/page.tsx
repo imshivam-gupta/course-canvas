@@ -21,15 +21,15 @@ const CourseIdPage = async ({
 }: {
   params: { courseId: string }
 }) => {
-  const session = await auth();
-  if (!session?.user) {
-    redirect("/auth/signin");
-  }
-  const userId = session?.user.id;
-
-    if (!userId) {
-        return redirect("/");
-    }
+  // const session = await auth();
+  // if (!session?.user) {
+  //   redirect("/auth/signin");
+  // }
+  // const userId = session?.user.id;
+  //
+  //   if (!userId) {
+  //       return redirect("/");
+  //   }
 
   const course = await db.course.findUnique({
     where: {

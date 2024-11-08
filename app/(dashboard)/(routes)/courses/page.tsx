@@ -7,6 +7,7 @@ import { CoursesList } from "@/components/courses-list";
 
 import { Categories } from "./_components/categories";
 import { auth } from '@/auth'
+import {fetchFromAPI} from "@/lib/utils";
 
 interface SearchPageProps {
   searchParams: {
@@ -18,23 +19,10 @@ interface SearchPageProps {
 const SearchPage = async ({
   searchParams
 }: SearchPageProps) => {
-  
-    const session = await auth();
-    const userId = session?.user.id;
-    if(!userId) {
-      return redirect("/auth/signin");
-    }
 
-  const categories = await db.category.findMany({
-    orderBy: {
-      name: "asc"
-    }
-  });
 
-  const courses = await getCourses({
-    userId,
-    ...searchParams,
-  });
+  const categories = await fetchFromAPI('/course/categories',"GET");
+  const courses = await fetchFromAPI('/course',"GET");
 
   return (
     <>

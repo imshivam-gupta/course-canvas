@@ -7,20 +7,23 @@ const DashboardLayout = async({
 }: {
   children: React.ReactNode;
 }) => {
-  const session = await auth();
-  if(!session) {
-    return redirect("/auth/signin");
-  }
-  return ( 
-    <div className="h-full">
-      <div className="h-[80px] fixed inset-y-0 w-full z-50">
-        <Navbar />
+
+  return (
+      <div className="h-full bg-dot-white/[0.2]">
+          <div className="h-[80px] inset-y-0 w-full z-50">
+              <Navbar/>
+          </div>
+          <div
+              className="w-full bg-black bg-dot-white/[0.2] relative pt-[0px]">
+
+              <main className="h-full">
+                  {children}
+              </main>
+          </div>
+
+
       </div>
-      <main className="pt-[80px] h-full">
-        {children}
-      </main>
-    </div>
-   );
+  );
 }
- 
+
 export default DashboardLayout;

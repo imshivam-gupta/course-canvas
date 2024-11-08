@@ -21,7 +21,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 // import { Editor } from "@/components/editor";
 // import { Preview } from "@/components/preview";
 
@@ -43,7 +43,7 @@ export const ChapterAccessForm = ({
   sectionId
 }: ChapterAccessFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const router = useRouter();

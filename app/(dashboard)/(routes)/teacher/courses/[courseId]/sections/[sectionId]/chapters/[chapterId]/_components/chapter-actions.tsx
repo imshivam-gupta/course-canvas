@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { ConfirmModal } from "@/components/modals/confirm-modal";
-import { useSession } from "next-auth/react";
 
 interface ChapterActionsProps {
   disabled: boolean;
@@ -27,26 +26,25 @@ export const ChapterActions = ({
 }: ChapterActionsProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const { data: session } = useSession();
 
   const onClick = async () => {
     try {
       setIsLoading(true);
   
 
-      if (isPublished) {
-        await axios.patch(`/api/courses/${courseId}/sections/${sectionId}/chapters/${chapterId}/unpublish`,{},{
-          headers:{
-            'authorization': session?.user.id
-          }});
-        toast.success("Chapter unpublished");
-      } else {
-        await axios.patch(`/api/courses/${courseId}/sections/${sectionId}/chapters/${chapterId}/publish`,{},{
-          headers:{
-            'authorization': session?.user.id
-          }});
-        toast.success("Chapter published");
-      }
+      // if (isPublished) {
+      //   await axios.patch(`/api/courses/${courseId}/sections/${sectionId}/chapters/${chapterId}/unpublish`,{},{
+      //     headers:{
+      //       'authorization': session?.user.id
+      //     }});
+      //   toast.success("Chapter unpublished");
+      // } else {
+      //   await axios.patch(`/api/courses/${courseId}/sections/${sectionId}/chapters/${chapterId}/publish`,{},{
+      //     headers:{
+      //       'authorization': session?.user.id
+      //     }});
+      //   toast.success("Chapter published");
+      // }
 
       router.refresh();
     } catch {
@@ -60,10 +58,10 @@ export const ChapterActions = ({
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/courses/${courseId}/sections/${sectionId}/chapters/${chapterId}`,{
-        headers:{
-          'authorization': session?.user.id
-        }});
+      // await axios.delete(`/api/courses/${courseId}/sections/${sectionId}/chapters/${chapterId}`,{
+      //   headers:{
+      //     'authorization': session?.user.id
+      //   }});
 
       toast.success("Chapter deleted");
       router.refresh();

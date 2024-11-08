@@ -15,7 +15,8 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth;
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+  // const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+  const isPublicRoute = true;
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
   if (isApiAuthRoute) {
@@ -23,9 +24,9 @@ export default auth((req) => {
   }
 
   if (isAuthRoute) {
-    if (isLoggedIn) {
-      return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
-    }
+    // if (isLoggedIn) {
+    //   return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl))
+    // }
     return null;
   }
 
@@ -37,10 +38,11 @@ export default auth((req) => {
 
     const encodedCallbackUrl = encodeURIComponent(callbackUrl);
 
-    return Response.redirect(new URL(
-      `/auth/signin?callbackUrl=${encodedCallbackUrl}`,
-      nextUrl
-    ));
+    // return Response.redirect(new URL(
+    //   `/auth/signin?callbackUrl=${encodedCallbackUrl}`,
+    //   nextUrl
+    // ));
+    return true;
   }
 
   return null;

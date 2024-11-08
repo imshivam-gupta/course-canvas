@@ -12,12 +12,21 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
     <div className="w-full">
       <style>
         {`
+        .notion-app{
+        min-height: 90vh!important;
+        height:90vh!important;
+        overflow-y: scroll;
+        }
           .notion-header {
             display: none !important;
           }
 
           .notion-page: {
             padding: 0px !important;
+          }
+          
+          .dark-mode{
+          background: transparent;
           }
         `}
       </style>
@@ -28,7 +37,7 @@ export const NotionRenderer = ({ recordMap }: { recordMap: any }) => {
           }}
           recordMap={recordMap}
           fullPage={true}
-          darkMode={resolvedTheme === "dark"}
+          darkMode={true}
         />
       </div>
     </div>

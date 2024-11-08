@@ -20,7 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Combobox } from "@/components/ui/combobox";
-import { useSession } from "next-auth/react";
+// import { useSession } from "next-auth/react";
 
 interface EditorCategoryFormProps {
   initialData: Course;
@@ -38,7 +38,7 @@ export const EditorCategoryForm = ({
   options,
 }: EditorCategoryFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   const toggleEdit = () => setIsEditing((current) => !current);
 
   const router = useRouter();
@@ -56,7 +56,7 @@ export const EditorCategoryForm = ({
     try {
       await axios.patch(`/api/courses/${courseId}`, values,{
         headers: {
-          'authorization': session?.user.id
+          // 'authorization': session?.user.id
         },
       }
       );

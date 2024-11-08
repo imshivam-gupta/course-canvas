@@ -15,7 +15,7 @@ export default function CodeBlock({ block }: { block: any }) {
   const [showCopiedMessage, setShowCopiedMessage] = useState(false);
 
   return (
-    <div className="max-w-full overflow-auto">
+    <div className="max-w-full overflow-auto py-6">
       <pre className={`${styles.code_block} px-4 sm:px-6 md:px-8 relative`}>
         <code className="language-javascript">{code}</code>
         <div className={`${styles.copy_block} absolute top-0 right-0`}>

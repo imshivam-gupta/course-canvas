@@ -32,7 +32,7 @@ export const ChapterVideoForm = ({
   chapterId,
 }: ChapterVideoFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
 
   const toggleEdit = () => setIsEditing((current) => !current);
 
@@ -46,7 +46,7 @@ export const ChapterVideoForm = ({
     try {
       await axios.patch(`/api/courses/${courseId}/sections/${sectionId}/chapters/${chapterId}`, values,{
         headers:{
-          'authorization': session?.user.id
+          // 'authorization': session?.user.id
         }});
       toast.success("Chapter updated");
       toggleEdit();

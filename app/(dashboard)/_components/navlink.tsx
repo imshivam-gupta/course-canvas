@@ -8,10 +8,9 @@ interface NavLinkProps {
 
 export const NavLink = ({ href , routename, ...props }:NavLinkProps) => {
     return (
-        <Link href={href} className="text-black my-auto">
-            <Button size="sm" variant="ghost">
-                {routename}
-            </Button>
+        <Link href={href}
+              className="transition-colors hover:text-white/80 text-white/60 mr-3 text-sm font-medium">
+            <span className="hidden sm:block">{routename}</span>
         </Link>
     );
 }

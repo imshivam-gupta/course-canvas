@@ -9,64 +9,38 @@ import { auth } from '@/auth'
 import Link from "next/link";
 
 interface SectionSidebarProps {
-  section: Section & {
-    chapters: (Chapter & {
-      userProgress: UserProgress[] | null;
-    })[]
-  };
-  progressCount: number;
+  section: any;
   course: Course;
+  sectionId: string;
+  courseId: string;
 };
 
 export const SectionSidebar = async ({
   section,
   course,
-  progressCount,
+  sectionId,
+    courseId,
 }: SectionSidebarProps) => {
     
-    const session = await auth();
-    const userId = session?.user.id;
-    if(!userId) {
-      return redirect("/auth/signin");
-    }
 
 
-  const purchase = await db.purchase.findUnique({
-    where: {
-      userId_courseId: {
-        userId,
-        courseId: course.id,
-      }
-    }
-  });
+
 
   return (
     <div className="h-full border-r flex flex-col overflow-y-auto shadow-sm">
       <div className="px-8 h-[80px] flex flex-col justify-center">
-        <Link href={`/courses/${course.id}`}>
-        <h1 className="font-semibold -mt-2">
-          {course.title}
-        </h1>
-        </Link>
-        {purchase && (
-          <div className="mt-10">
-            <SectionProgress
-              variant="success"
-              value={progressCount}
-            />
-          </div>
-        )}
+
       </div>
       <div className="flex flex-col w-full">
         {section.chapters.map((chapter) => (
           <SectionSidebarItem
-            sectionId={section.id}
-            key={chapter.id}
-            id={chapter.id}
+            sectionId={sectionId}
+            key={chapter._id}
+            id={chapter._id}
             label={chapter.title}
             isCompleted={!!chapter.userProgress?.[0]?.isCompleted}
-            courseId={course.id}
-            isLocked={!chapter.isFree && !purchase}
+            courseId={courseId}
+            isLocked={false}
           />
         ))}
       </div>

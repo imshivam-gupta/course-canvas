@@ -26,10 +26,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
 
   return (
-    <SessionProvider session={session} basePath={`${process.env.NEXT_API_URL}${"/auth"}`}>
     <html lang="en">
       <head>
         <link
@@ -47,6 +45,5 @@ export default async function RootLayout({
       </body>
 
     </html>
-    </SessionProvider>
   );
 }

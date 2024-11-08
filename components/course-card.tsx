@@ -5,6 +5,7 @@ import { BookOpen } from "lucide-react";
 import { IconBadge } from "@/components/icon-badge";
 import { formatPrice } from "@/lib/format";
 import { CourseProgress } from "@/components/course-progress";
+import {WobbleCard} from "@/app/(dashboard)/_components/wobble-card";
 
 interface CourseCardProps {
   id: string;
@@ -14,6 +15,7 @@ interface CourseCardProps {
   price: number;
   progress: number | null;
   category: string;
+  description: string;
 };
 
 export const CourseCard = ({
@@ -23,48 +25,51 @@ export const CourseCard = ({
   sectionsLength,
   price,
   progress,
-  category
+  category,
+    description
 }: CourseCardProps) => {
   return (
-    <Link href={`/courses/${id}`}>
-      <div className="group hover:shadow-sm transition overflow-hidden border rounded-lg p-3 h-full">
-        <div className="relative w-full aspect-video rounded-md overflow-hidden">
-          <Image
-            fill
-            className="object-cover"
-            alt={title}
-            src={imageUrl}
-          />
-        </div>
-        <div className="flex flex-col pt-2">
-          <div className="text-lg md:text-base font-medium group-hover:text-sky-700 transition line-clamp-2">
+    // <Link href={`/courses/${id}`} className={"-mb-2"}>
+    //   <div className="group hover:shadow-sm transition overflow-hidden border rounded-lg p-3 h-full scale-x-95 scale-y-90 duration-500" >
+    //     <div className="relative w-full aspect-video rounded-md overflow-hidden">
+    //       <Image
+    //         fill
+    //         className="object-cover"
+    //         alt={title}
+    //         src={imageUrl}
+    //       />
+    //     </div>
+    //     <div className="flex flex-col pt-3 pb-5">
+    //       <div className="text-lg font-medium group-hover:text-[#01FF62] transition line-clamp-2 text-neutral-400  duration-500">
+    //         {title}
+    //       </div>
+    //       <p className="text-xs text-muted-foreground">
+    //         {category}
+    //       </p>
+    //     </div>
+    //   </div>
+    // </Link>
+      <Link href={`/courses/${id}`} >
+      <WobbleCard
+          containerClassName="h-full bg-gray-800 min-h-[4500px] lg:min-h-[300px]"
+          className="py-10 px-2"
+      >
+        <div className="">
+          <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white max-w-[38rem]">
             {title}
-          </div>
-          <p className="text-xs text-muted-foreground">
-            {category}
+          </h2>
+          <p className="mt-4 text-left  text-base/6 text-neutral-200 max-w-[24rem]">
+            {description}
           </p>
-          <div className="my-3 flex items-center gap-x-2 text-sm md:text-xs">
-            <div className="flex items-center gap-x-1 text-slate-500">
-              <IconBadge size="sm" icon={BookOpen} />
-              <span>
-                {sectionsLength} {sectionsLength === 1 ? "Section" : "Sections"}
-              </span>
-            </div>
-          </div>
-          {progress !== null ? (
-            <CourseProgress
-              variant={progress === 100 ? "success" : "default"}
-              size="sm"
-              value={progress}
-            />
-          ) : (
-            // <p className="text-md md:text-sm font-medium text-slate-700">
-            //   {formatPrice(price)}
-            // </p>
-            <></>
-          )}
         </div>
-      </div>
-    </Link>
+        <Image
+            src={imageUrl}
+            width={500}
+            height={500}
+            alt="linear demo image"
+            className="absolute -right-4 lg:-right-[10%] filter -bottom-6 object-contain rounded-2xl opacity-80"
+        />
+      </WobbleCard>
+      </Link>
   )
 }
